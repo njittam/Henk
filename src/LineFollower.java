@@ -1,7 +1,13 @@
+import java.util.ArrayList;
+
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
+import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 
 
 public class LineFollower {
@@ -12,7 +18,6 @@ public class LineFollower {
 	NXTRegulatedMotor right;
 	NXTRegulatedMotor left;
 	NXTRegulatedMotor arm;
-	
 	public LineFollower(EV3ColorSensor cs, boolean onLine, NXTRegulatedMotor l, NXTRegulatedMotor r, NXTRegulatedMotor
 			a){
 		this.colorSensor = cs;
@@ -37,6 +42,42 @@ public class LineFollower {
 	}
 	
 	void scanline () {
+		
+	}
+	enum colors {kleur1,kleur2,kleur3,kleur4};
+	static int threshold = 0;
+	public ArrayList<colors> convert_colors(ArrayList<float[]> list){
+		int verschillendkleurtje = 1;
+		ArrayList<colors> kleurenlist = new ArrayList<colors> ();
+		ArrayList<int[]> temp;
+		for (int i = 0; i < list.size() ; i++)
+		{
+			tijdelijk.add(e);
+		}
+		if (kleurenlist.size() == list.size())
+			return kleurenlist;
+		else return null;
+	}
+	
+	public static ArrayList<float[]> sweep( int degrees, int degrees_sweep, boolean toleft, int speed){
+		
+		EV3ColorSensor sc = new EV3ColorSensor(SensorPort.S4);
+		SensorMode m = sc.getRGBMode();
+		Motor.D.setSpeed(speed);
+		float[] sample = new float[m.sampleSize()];
+		ArrayList<float[]> samples = new ArrayList<float[]> ();
+		for (int i = 0; i < degrees;i+=degrees_sweep){
+			m.fetchSample(sample, 0);
+			samples.add(sample.clone());
+			if (toleft)
+				Motor.D.rotate(-degrees_sweep);
+			else
+				Motor.D.rotate(degrees_sweep);	
+
+			
+		}
+		
+		return samples;
 		
 	}
 }

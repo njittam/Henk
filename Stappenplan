@@ -1,0 +1,5 @@
+Stappenplan:
+
+Onze robot beweegt zijn arm van zij naar zij terwijl hij naar voren rijdt. Door dit te doen krijgt hij bepaalde informatie van zijn kleurensensor.
+Deze informatie zet hij om in meerdere kleuren, een lijn en de achtergrond. Als hij deze informatie eenmaal heeft kan hij berekenen wat het pad is. 
+Eenmaal berekend kan hij zich goed positioneren. Hij kijkt dan wat zijN positie is (in een hoek of in het midden van de lijn)

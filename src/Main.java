@@ -18,9 +18,19 @@ public class Main {
 		//LCD.drawString( Integer.toString(m.sampleSize()), 1, 1);
 		//float[] sample = new float[m.sampleSize()];
 		//m.fetchSample(sample, 0);
+		Motor.D.resetTachoCount();
+		Motor.D.rotateTo(50);
+		movement m = new defMovement();
+		m.move_according_to_arm(0);
+		Delay.msDelay(5000);
+		Motor.D.rotateTo(-50);
+		m.move_according_to_arm(0);
+		/*
 		lineFolower newf = new LineFollower();
 		newf.sweep(180,10,false, 2000);
 		Delay.msDelay(5000);
+	*/
 	}
+	
 	
 }

@@ -9,7 +9,7 @@ import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.SampleProvider;
 
 
-public class LineFollower {
+public class LineFollower implements lineFolower{
 	private int linethickness;
 	private int line_color;
 	private int surrounding_color;
@@ -80,25 +80,43 @@ public class LineFollower {
 		
 	}
 	*/
-	public static ArrayList<float[]> sweep( int degrees, int degrees_sweep, boolean toleft, int speed){
-		
-		NXTLightSensor sc = new NXTLightSensor(SensorPort.S4);
-		SensorMode m = sc.getRGBMode();
-		Motor.D.setSpeed(speed);
-		float[] sample = new float[m.sampleSize()];
-		ArrayList<float[]> samples = new ArrayList<float[]> ();
-		for (int i = 0; i < degrees;i+=degrees_sweep){
-			m.fetchSample(sample, 0);
-			samples.add(sample.clone());
-			if (toleft)
-				Motor.D.rotate(-degrees_sweep);
-			else
-				Motor.D.rotate(degrees_sweep);	
 
-			
-		}
-		
-		return samples;
+public LineFollower() {
+		// TODO Auto-generated constructor stub
+	}
+
+@Override
+public ArrayList<float[]> sweep(int degrees, int degrees_sweep, boolean toleft,
+		int speed) {
+	NXTLightSensor sc = new NXTLightSensor(SensorPort.S4);
+	SensorMode m = sc.getRedMode();
+	Motor.D.setSpeed(speed);
+	float[] sample = new float[m.sampleSize()];
+	ArrayList<float[]> samples = new ArrayList<float[]> ();
+	for (int i = 0; i < degrees;i+=degrees_sweep){
+		m.fetchSample(sample, 0);
+		samples.add(sample.clone());
+		if (toleft)
+			Motor.D.rotate(-degrees_sweep);
+		else
+			Motor.D.rotate(degrees_sweep);	
+
 		
 	}
+	
+	return samples;
+}
+
+
+@Override
+public int move_arm_to_position() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public void follow_single_line() {
+	// TODO Auto-generated method stub
+	
+}
 }

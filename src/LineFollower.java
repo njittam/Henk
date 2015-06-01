@@ -24,10 +24,10 @@ public class LineFollower implements lineFolower{
 		this.left = l;
 		this.arm = a;
 		if (onLine){
-			measure_line_color();
+		//	measure_line_color();
 			Motor.A.rotate(90);
 		}else{
-			measure_surrounding_color();
+		//	measure_surrounding_color();
 		}
 	}
 /*	

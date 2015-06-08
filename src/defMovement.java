@@ -35,40 +35,36 @@ public class defMovement implements movement {
 		NXTRegulatedMotor left = Motor.B; // TODO zijn dit de goede motoren?
 		NXTRegulatedMotor right =  Motor.A;
 		int speed = 100; // TODO check of speed goed is.
-		int delay = 1; // TODO check of waarde goed is.
+		int delay = 1000; // TODO check of waarde goed is.
 		int current_degree = 0;
-		while (degrees - Math.abs(current_degree  - start_degree) != 0){
+		while(degrees - Math.abs(current_degree  - start_degree) >= 0)
+		{
+			//LCD.drawChar(c, x, y);
+			LCD.drawInt(i++, 2, 2);
+			LCD.drawInt(start_degree, 3, 3);
+			current_degree = (int) sample[0];
+			sp.fetchSample(sample, 0);
+			if (clockwise){
+				left.setSpeed(speed);
+				right.setSpeed(speed);
+				left.forward();
+				right.backward();
+				//Delay.msDelay(delay); // TODO deze weghalen?
+				//right.stop(true);
+				//left.stop(true);
 
-			while(degrees - Math.abs(current_degree  - start_degree) >= 0)
-			{
-				//LCD.drawChar(c, x, y);
-				LCD.drawInt(i++, 2, 2);
-				LCD.drawInt(start_degree, 3, 3);
-				current_degree = (int) sample[0];
-				sp.fetchSample(sample, 0);
-				if (clockwise){
-					left.setSpeed(speed);
-					right.setSpeed(speed);
-					left.forward();
-					right.backward();
-					Delay.msDelay(delay); // TODO deze weghalen?
-					right.stop(true);
-					left.stop(true);
-
-				}else {
-					right.setSpeed(speed);
-					left.setSpeed(speed);
-					right.forward();
-					left.backward();
-					Delay.msDelay(delay);
-					right.stop(true);
-					left.stop(true);
-				}                                                                                                                                                                                                   
-			}
-			
-			clockwise = !clockwise;
-			delay = delay*2;
+			}else {
+				right.setSpeed(speed);
+				left.setSpeed(speed);
+				right.forward();
+				left.backward();
+				//Delay.msDelay(delay);
+				//right.stop(true);
+				//left.stop(true);
+			}                                                                                                                                                                                                  
 		}
+		right.stop(true);
+		left.stop(true);
 		s.close();
 		/*
 				while(degrees - Math.abs(Math.abs(current_degree)  - start_degree) >= 0){

@@ -1,5 +1,7 @@
 
 public class behaviors {
+	
+	
 	public void play_love_song(){
 		
 	}

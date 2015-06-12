@@ -7,9 +7,62 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.NXTLightSensor;
 import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.SampleProvider;
+import lejos.utility.Delay;
 
 
-public class LineFollower implements lineFolower{
+public class LineFollower{
+	
+	/**
+	 * linefolower
+	 * 
+	 * @param lb dit is een class waarvan lb de superclass is.
+	 */
+	public void line_follower(lineBool lb){// geef nooit een lineBool mee maar een eigen class waarvan lineBool de superclass is.
+		
+		boolean stop = false;
+		defMovement movement = new defMovement();
+		while (!stop){
+			int middle_position = Motor.D.getTachoCount();
+			this.find_line();
+			movement.move_according_to_arm(middle_position);
+			this.move_forward();
+			switch(lb.getF()){  //ALs je lineBool aanpast moet je deze switch case ook aanpassen.
+			case stop_following1:
+				stop = lb.stop_following();
+				break;
+			default:
+				stop = true;
+				break;
+			
+			}
+		}
+	}
+	
+	
+	private void move_forward() {
+		int speed = 10; //TODO kloppen deze waarden?
+		int delay = 100;
+		NXTRegulatedMotor left = Motor.A; //TODO kloppen deze waarden?
+		NXTRegulatedMotor right = Motor.B;
+		right.setSpeed(speed);
+		left.setSpeed(speed);
+		right.forward();
+		left.forward();
+		Delay.msDelay(delay);
+		right.stop(true);
+		left.stop(true);
+		
+	}
+
+
+	private int find_line() {
+		// TODO Auto-generated method stub
+		numberofdegrees jelmercode = new numberofdegrees();
+		return jelmercode.find_path();
+		
+	}
+}
+	/*
 	private int linethickness;
 	private int line_color;
 	private int surrounding_color;
@@ -24,13 +77,13 @@ public class LineFollower implements lineFolower{
 		this.left = l;
 		this.arm = a;
 		if (onLine){
-		//	measure_line_color();
+			//	measure_line_color();
 			Motor.A.rotate(90);
 		}else{
-		//	measure_surrounding_color();
+			//	measure_surrounding_color();
 		}
 	}
-/*	
+	/*	
 	void measure_line_color(){
 		SampleProvider rgbProvider = colorSensor.getRGBMode();
 		line_color = colorSensor.getColorID();
@@ -39,9 +92,9 @@ public class LineFollower implements lineFolower{
 		SampleProvider rgbProvider = colorSensor.getRGBMode();
 		surrounding_color = colorSensor.getColorID();
 	}
-	
+
 	void scanline () {
-		
+
 	}
 	enum colors {kleur1,kleur2,kleur3,kleur4};
 	static int threshold = 0;
@@ -57,9 +110,9 @@ public class LineFollower implements lineFolower{
 			return kleurenlist;
 		else return null;
 	}
-	
+
 	public static ArrayList<float[]> sweep( int degrees, int degrees_sweep, boolean toleft, int speed){
-		
+
 		EV3ColorSensor sc = new EV3ColorSensor(SensorPort.S4);
 		SensorMode m = sc.getRGBMode();
 		Motor.D.setSpeed(speed);
@@ -73,50 +126,47 @@ public class LineFollower implements lineFolower{
 			else
 				Motor.D.rotate(degrees_sweep);	
 
-			
-		}
-		
-		return samples;
-		
-	}
-	*/
 
-public LineFollower() {
+		}
+
+		return samples;
+
+	}
+	 
+
+	public LineFollower() {
 		// TODO Auto-generated constructor stub
 	}
 
-@Override
-public ArrayList<float[]> sweep(int degrees, int degrees_sweep, boolean toleft,
-		int speed) {
-	NXTLightSensor sc = new NXTLightSensor(SensorPort.S4);
-	SensorMode m = sc.getRedMode();
-	Motor.D.setSpeed(speed);
-	float[] sample = new float[m.sampleSize()];
-	ArrayList<float[]> samples = new ArrayList<float[]> ();
-	for (int i = 0; i < degrees;i+=degrees_sweep){
-		m.fetchSample(sample, 0);
-		samples.add(sample.clone());
-		if (toleft)
-			Motor.D.rotate(-degrees_sweep);
-		else
-			Motor.D.rotate(degrees_sweep);	
+	public ArrayList<float[]> sweep(int degrees, int degrees_sweep, boolean toleft,
+			int speed) {
+		NXTLightSensor sc = new NXTLightSensor(SensorPort.S4);
+		SensorMode m = sc.getRedMode();
+		Motor.D.setSpeed(speed);
+		float[] sample = new float[m.sampleSize()];
+		ArrayList<float[]> samples = new ArrayList<float[]> ();
+		for (int i = 0; i < degrees;i+=degrees_sweep){
+			m.fetchSample(sample, 0);
+			samples.add(sample.clone());
+			if (toleft)
+				Motor.D.rotate(-degrees_sweep);
+			else
+				Motor.D.rotate(degrees_sweep);	
 
-		
+
+		}
+
+		return samples;
 	}
-	
-	return samples;
-}
 
+	public int move_arm_to_position() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-@Override
-public int move_arm_to_position() {
-	// TODO Auto-generated method stub
-	return 0;
-}
+	public void follow_single_line() {
+		// TODO Auto-generated method stub
 
-@Override
-public void follow_single_line() {
-	// TODO Auto-generated method stub
-	
+	}
 }
-}
+/*/

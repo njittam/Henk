@@ -21,7 +21,7 @@ public class Main {
 		//m.fetchSample(sample, 0);
 		Motor.D.resetTachoCount();
 		
-		movement m = new defMovement();
+		defMovement m = new defMovement();
 		m.rotate(90, true);
 		Motor.D.rotateTo(90);
 		m.move_according_to_arm(0);

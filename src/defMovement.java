@@ -7,9 +7,10 @@ import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
-public class defMovement implements movement {
+public class defMovement {
 
-	@Override
+	/* gebruikt rotate om naar de huidige positie van de arm te draaien. 
+	 * en ze de arme recht naar voren*/
 	public void move_according_to_arm(int middle_position) {
 		// TODO Auto-generated method stub
 		NXTRegulatedMotor arm = Motor.D; //TODO is dit de arm?
@@ -19,7 +20,9 @@ public class defMovement implements movement {
 		arm.rotateTo(middle_position);
 	}
 
-	@Override
+	/* gebruikt de gyroscopp om te draaien
+	 * true als de robot met de clock mee draait 
+	 * false als tgenen de klok in*/
 	public void rotate(int degrees, boolean clockwise) {
 		if (degrees <= 0){
 			return;
@@ -29,8 +32,7 @@ public class defMovement implements movement {
 		SampleProvider sp = s.getAngleMode();
 		float[] sample = new float[sp.sampleSize()]; //TODO werkt dit?
 		int i = 0;
-		sp.fetchSample(sample, 0);  // TODO moet dit 0 zijn?
-		//int sample_size = sp.sampleSize();
+		sp.fetchSample(sample, 0);  // TODO moet dit 0 zijn
 		int start_degree = (int) sample[0]; // TODO klopt dat dit de draaing is?
 		NXTRegulatedMotor left = Motor.B; // TODO zijn dit de goede motoren?
 		NXTRegulatedMotor right =  Motor.A;
@@ -48,45 +50,17 @@ public class defMovement implements movement {
 		}
 		while(degrees - Math.abs(current_degree  - start_degree) >= 0)
 		{
-			LCD.drawInt(degrees , 2, 2);
-			LCD.drawInt( Math.abs(current_degree  - start_degree), 3, 3);
-			LCD.drawInt(degrees - Math.abs(current_degree  - start_degree), 4, 4);
+		
 			current_degree = (int) sample[0];
 			sp.fetchSample(sample, 0);                                                                                                                                                                                                  
 		}
 		right.stop(true);
 		left.stop(true);
 		s.close();
-		/*
-				while(degrees - Math.abs(Math.abs(current_degree)  - start_degree) >= 0){
-					if (clockwise){
-						left.setSpeed(speed);
-						right.setSpeed(speed);
-						left.forward();
-						right.backward();
-						Delay.msDelay(delay); // TODO deze weghalen?
-						right.stop();
-						left.stop();
-					} else {
-							right.setSpeed(speed);
-							left.setSpeed(speed);
-							right.forward();
-							left.backward();
-							Delay.msDelay(delay);
-							right.stop();
-							left.stop();
-					}
-					//SampleProvider sp2 = s.getAngleMode();
-					//sample_size = sp.sampleSize();
-					System.out.println(sample_size);
-					sp.fetchSample(sample, 0);
-					current_degree = (int) sample[0];
-					s.close();
-
-				}*/
 	}
 
-	@Override
+	/* een algoritme dat de robot voorzichtig 
+	 * over een wiwap laat rijden*/
 	public void beweeg_over_wip_wap() {
 		// TODO Auto-generated method stub
 

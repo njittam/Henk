@@ -26,6 +26,8 @@ public class LineFollower{
 			this.find_line();
 			movement.move_according_to_arm(middle_position);
 			this.move_forward(true);
+			
+			
 			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
 			case stop_following1:
 				stop = lb.stop_following();

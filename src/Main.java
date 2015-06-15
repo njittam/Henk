@@ -21,7 +21,7 @@ public class Main {
 		//m.fetchSample(sample, 0);
 		Motor.D.resetTachoCount();
 		//numberofdegrees jelmer = new numberofdegrees();
-		//jelmer.find_path();
+		//jelmer.find_path()
 		
 		LineFollower lf = new LineFollower();
 		lf.line_follower(new linetest());

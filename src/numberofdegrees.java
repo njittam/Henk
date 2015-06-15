@@ -8,7 +8,7 @@ import lejos.robotics.SampleProvider;
 public class numberofdegrees {
 	NXTRegulatedMotor arm = Motor.D;
 	NXTLightSensor sensor = new NXTLightSensor(SensorPort.S2);
-	int middle_positon = 180;
+	int middle_positon = 0;
 	
 
 	public int find_path () {

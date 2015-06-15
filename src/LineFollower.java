@@ -26,14 +26,13 @@ public class LineFollower{
 			this.find_line();
 			movement.move_according_to_arm(middle_position);
 			this.move_forward();
-			switch(lb.getF()){  //ALs je lineBool aanpast moet je deze switch case ook aanpassen.
+			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
 			case stop_following1:
 				stop = lb.stop_following();
 				break;
 			default:
 				stop = true;
 				break;
-			
 			}
 		}
 	}

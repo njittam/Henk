@@ -1,8 +1,9 @@
-import java.awt.Color;
+
 
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3IRSensor;
+import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 
 /**

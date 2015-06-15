@@ -1,19 +1,17 @@
-import lejos.hardware.Button;
 
-
-public class linetest extends lineBool {
-	public linetest(){
+public class test extends lineBool {
+	public test(){
 		this(lineBool.functie.stop_following1);
 	}
-	
-	public linetest(functie f) {
+	public test(functie f) {
 		super(f);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean stop_following() {
 		// TODO Auto-generated method stub
-		return Button.ESCAPE.isDown();
+		return false;
 	}
 
 	@Override

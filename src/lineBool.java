@@ -17,12 +17,13 @@
  * 
  */
 public abstract class lineBool {
-	public enum functie {stop_following1}
+	public enum functie {stop_following1,stop_following2}
 	private functie f;
 	
 	public lineBool(functie f){
 		this.setF(f);
 	}
+	
 	/**
 	 * dit geld voor alle functies.
 	 * aannamens:
@@ -30,8 +31,8 @@ public abstract class lineBool {
 	 * 		* de arm staat in het midden bij returnen
 	 * @return true als linefollower moet stoppen.
 	 */
-	public abstract boolean stop_following(); //stop_following1
-	
+	public abstract boolean stop_following(); //stop_following1 en deze functie niet aanpassen
+	public abstract boolean stop_following(int i); //stop_following2
 	
 	
 	

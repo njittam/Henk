@@ -25,32 +25,37 @@ public class LineFollower{
 			int middle_position = Motor.D.getTachoCount();
 			this.find_line();
 			movement.move_according_to_arm(middle_position);
-			this.move_forward();
+			this.move_forward(true);
 			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
 			case stop_following1:
 				stop = lb.stop_following();
 				break;
+			case stop_following2:
+				stop = lb.stop_following(0);
 			default:
 				stop = true;
 				break;
 			}
 		}
+		Motor.A.stop();
+		Motor.B.stop();
 	}
 	
 	
-	private void move_forward() {
-		int speed = 10; //TODO kloppen deze waarden?
-		int delay = 100;
+	private void move_forward(boolean stop) {
+		int speed = 100; //TODO kloppen deze waarden?
+		int delay = 500;
 		NXTRegulatedMotor left = Motor.A; //TODO kloppen deze waarden?
 		NXTRegulatedMotor right = Motor.B;
 		right.setSpeed(speed);
 		left.setSpeed(speed);
 		right.forward();
 		left.forward();
-		Delay.msDelay(delay);
-		right.stop(true);
-		left.stop(true);
-		
+		if (stop){
+			Delay.msDelay(delay);
+			right.stop(true);
+			left.stop(true);
+		}		
 	}
 
 

@@ -13,19 +13,11 @@ public class numberofdegrees {
 	
 
 	public int find_path () {
-		NXTLightSensor sensor = new NXTLightSensor(SensorPort.S2);
 		NXTRegulatedMotor arm = Motor.D;
 		int middle_positon = 0;
 		int minpos = middle_positon - 90;
 		int maxpos = middle_positon + 90;
-		Delay.msDelay(1000);
-		SampleProvider sp = sensor.getRedMode();
-		Delay.msDelay(1000);
-		
-		Sound.beep();
-		sensor.close();
-		/*
-		double pad_ambient = 0.15; // waarde tussen 1 en 0
+		double pad_ambient = 0.40; // waarde tussen 1 en 0
 		int armspeed = 100;
 		arm.rotateTo(minpos);
 		boolean klaar = false;
@@ -47,7 +39,6 @@ public class numberofdegrees {
 			arm.rotateTo(middle_positon);
 		arm.stop();
 		sensor.close();
-		return 0;*/
 		return 0;
 	}	
 }

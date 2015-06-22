@@ -14,7 +14,9 @@ public class defMovement {
 	public void move_according_to_arm(int middle_position) {
 		// TODO Auto-generated method stub
 		NXTRegulatedMotor arm = Motor.D; //TODO is dit de arm?
+		//arm.setSpeed(100);
 		float current_torque = arm.getPosition();
+		//arm.rotateTo(middle_position - 9,true);
 		int degrees = (int) (middle_position - current_torque);
 		rotate(Math.abs(degrees),degrees <= 0);// TODO check of de boolean goed is.
 		arm.rotateTo(middle_position);
@@ -27,7 +29,6 @@ public class defMovement {
 		if (degrees <= 0){
 			return;
 		}				
-
 		EV3GyroSensor s = new EV3GyroSensor(SensorPort.S1);
 		SampleProvider sp = s.getAngleMode();
 		float[] sample = new float[sp.sampleSize()]; //TODO werkt dit?
@@ -48,7 +49,7 @@ public class defMovement {
 			right.forward();
 			left.backward();
 		}
-		while(degrees - Math.abs(current_degree  - start_degree) >= 0)
+		while((0.5*degrees) - Math.abs(current_degree  - start_degree) >= 0)
 		{
 		
 			current_degree = (int) sample[0];

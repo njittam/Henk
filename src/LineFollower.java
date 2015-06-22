@@ -45,8 +45,9 @@ public class LineFollower{
 	
 	
 	private void move_forward(boolean stop) {
-		int speed = 100; //TODO kloppen deze waarden?
-		int delay = 500;
+		int speed = 200; //TODO kloppen deze waarden?
+		int delay = 700;
+		//Motor.D.rotateTo( 90,true);
 		NXTRegulatedMotor left = Motor.A; //TODO kloppen deze waarden?
 		NXTRegulatedMotor right = Motor.B;
 		right.setSpeed(speed);
@@ -57,11 +58,12 @@ public class LineFollower{
 			Delay.msDelay(delay);
 			right.stop(true);
 			left.stop(true);
-		}		
+		}
+		//Motor.D.rotateTo(0,true);
 	}
 
 
-	private int find_line() {
+	private boolean find_line() {
 		// TODO Auto-generated method stub
 		numberofdegrees jelmercode = new numberofdegrees();
 		return jelmercode.find_path();

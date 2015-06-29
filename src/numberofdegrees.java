@@ -48,11 +48,11 @@ public class numberofdegrees {
 		
 		arm.setSpeed(armspeed);
 		arm.rotateTo(minpos);   
-		while (!klaar&&arm.getTachoCount() <= maxpos){
+		while (!klaar){
 			sensor.setFloodlight(true);
 	        sp.fetchSample(sample, 0);
 			System.out.println(sample[0]);
-			if (sample[0] > pad_ambient ) {
+			if (sample[0] > pad_ambient || arm.getTachoCount() <= maxpos ) {
 				klaar = true;
 			}
 		}

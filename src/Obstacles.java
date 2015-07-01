@@ -17,7 +17,7 @@ public class Obstacles {
 	}
 
 	public void Bridge() {
-		rotate(arm.)
+		
 	}
 
 }

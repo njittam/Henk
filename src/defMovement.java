@@ -26,7 +26,7 @@ public class defMovement {
 		// arm.rotateTo(middle_position - 9,true);
 		int degrees = (int) (middle_position - current_torque);
 		rotate(Math.abs(degrees), degrees <= 0);// TODO check of de boolean goed
-												// is.
+		// is.
 		arm.rotateTo(middle_position);
 	}
 
@@ -34,23 +34,21 @@ public class defMovement {
 	 * gebruikt de gyroscopp om te draaien true als de robot met de clock mee
 	 * draait false als tgenen de klok in
 	 */
-	public void rotate(int degrees, boolean clockwise) {
-		if (degrees <= 0) {
+	public void rotate(int degree, boolean clockwise) {
+		if (degree <= 0) {
 			return;
 		}
 		SampleProvider sp = s.getAngleMode();
 		float[] sample = new float[sp.sampleSize()]; // TODO werkt dit?
 		int i = 0;
 		sp.fetchSample(sample, 0); // TODO moet dit 0 zijn
-		System.out.println(sample[0] % 360);
-		int start_degree = (int) sample[0] % 360; // TODO klopt dat dit de
-													// draaing is?
-	 	if (start_degree < 0)
-		start_degree = 360 - Math.abs(start_degree);
+		System.out.println(sample[0]);
+		int start_degree = (int) sample[0]; // TODO klopt dat dit de
+		// draaing is
 		NXTRegulatedMotor left = Motor.B; // TODO zijn dit de goede motoren?
 		NXTRegulatedMotor right = Motor.A;
-		int speed = 50; // TODO check of speed goed is.
-		int current_degree = 0;
+		int speed = 200; // TODO check of speed goed is.
+		int current_degree = start_degree;
 		left.setSpeed(speed);
 		right.setSpeed(speed);
 		if (clockwise) {
@@ -61,17 +59,15 @@ public class defMovement {
 			right.forward();
 			left.backward();
 		}
-		System.out.println(degrees - Math.abs(current_degree - start_degree));
-		System.out.println(degrees + ":" + current_degree + ":" + start_degree);
-		while (degrees - Math.abs(current_degree - start_degree) >= 0) {
+		System.out.println(degree - Math.abs(current_degree - start_degree));
+		System.out.println(degree + ":" + current_degree + ":" + start_degree);
+		while (0.8*degree - Math.abs(current_degree - start_degree) > 0) {
 			// System.out.println("waardes");
-			System.out.println(degrees
+			System.out.println(degree
 					- Math.abs(current_degree - start_degree));
-			System.out.println(degrees + ":" + current_degree + ":"
+			System.out.println(degree + ":" + current_degree + ":"
 					+ start_degree);
-			current_degree = (int) sample[0] % 360;
-			if (current_degree < 0)
-			current_degree = 360 - Math.abs(current_degree);
+			current_degree = (int) sample[0];
 			sp.fetchSample(sample, 0);
 		}
 		right.stop(true);

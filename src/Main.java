@@ -13,7 +13,7 @@ import lejos.utility.Delay;
 public class Main {
 
 	public static void main(String[] args) {
-		detection det = new detection();
+		/*detection det = new detection();
 		Sounds sounds = new Sounds();
 		int i= 0;
 		while (i < 5000000) {
@@ -23,7 +23,7 @@ public class Main {
 			}
 			i  += 1;
 		}
-		Motor.D.resetTachoCount();
+		Motor.D.resetTachoCount();*/
 		LineFollower lf = new LineFollower(new EV3GyroSensor(SensorPort.S1),
 				new NXTLightSensor(SensorPort.S2));
 		lf.line_follower(new linetest());

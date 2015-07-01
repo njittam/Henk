@@ -29,9 +29,12 @@ public class LineFollower{
 		defMovement movement = new defMovement(gyro);
 		while (!stop){
 			int middle_position = Motor.D.getTachoCount();
+			this.move_forward(false);
 			this.find_line();
+			Motor.A.stop(true);
+			Motor.B.stop(true);
 			movement.move_according_to_arm(middle_position);
-			this.move_forward(true);
+			//this.move_forward(true);
 			
 			
 			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
@@ -51,8 +54,8 @@ public class LineFollower{
 	
 	
 	private void move_forward(boolean stop) {
-		int speed = 200; //TODO kloppen deze waarden?
-		int delay = 700;
+		int speed = 100; //TODO kloppen deze waarden?
+		int delay = 0;
 		//Motor.D.rotateTo( 90,true);
 		NXTRegulatedMotor left = Motor.A; //TODO kloppen deze waarden?
 		NXTRegulatedMotor right = Motor.B;

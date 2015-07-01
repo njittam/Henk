@@ -57,7 +57,6 @@ public class detection {
 				return Color.RED;
 			} else if (colorSample[2] >= 0.01 || colorSample[1] >= 0.01) // TODO
 																			// kleuren
-			// aanpassen
 			{
 				System.out.println("TESTblue");
 				s.close();

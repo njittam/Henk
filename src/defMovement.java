@@ -1,11 +1,7 @@
-import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
-import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3GyroSensor;
-import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 public class defMovement {
 	EV3GyroSensor s;

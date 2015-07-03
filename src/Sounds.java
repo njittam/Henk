@@ -12,12 +12,14 @@ public class Sounds extends Thread{
 	static enum Songs {Rick};
 	public Songs song = Songs.Rick;
 	public void run(){
+		System.out.println("song");
 		switch(song){
 		case Rick:
 			rick();
 			break;
 		default:
 			break;
+		
 		
 		}
 	}

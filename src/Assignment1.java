@@ -13,6 +13,7 @@ public class Assignment1 {
 	EV3GyroSensor gyro;
 	public boolean stop;
 	public double tower_dist = 0.30;
+	double pad_ambient = 0.42;
 	private EV3UltrasonicSensor dist_sens;
 	public Assignment1(NXTLightSensor s, EV3GyroSensor gyro, EV3UltrasonicSensor d){
 		this.light = s;
@@ -22,6 +23,7 @@ public class Assignment1 {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Assignment1 as1 = new Assignment1(new NXTLightSensor(SensorPort.S2), new EV3GyroSensor(SensorPort.S1), new EV3UltrasonicSensor(SensorPort.S3));
@@ -29,22 +31,39 @@ public class Assignment1 {
 		int follow = 0;
 		Sounds s = new Sounds();
 		s.setDaemon(true);	
+		Sounds s2 = new Sounds();
+		s2.setDaemon(true);
+		Sounds s3 = new Sounds();
+		s3.setDaemon(true);	
 		//s.start();
+		as1.move_to_line();
 		while (follow < min_follow)
 			follow = as1.line_follower(false);
 		s.start();
 		follow = 0;
 		while (follow < min_follow)
 			follow = as1.line_follower(false);
-		s.start();
+		s2.start();
 		follow = 0;
 		while (follow < min_follow)
 			follow = as1.line_follower(true);
-		s.start();
+		s3.start();
 
 	}
 	public void move_to_line(){
-		
+		int speed = 100;
+		SampleProvider sp = light.getRedMode();
+		float[] sample = new float[sp.sampleSize()];
+		Motor.A.setSpeed(speed);
+		Motor.B.setSpeed(speed);
+		Motor.A.forward();
+		Motor.B.forward();
+		sp.fetchSample(sample, 0);
+		while(sample[0]< pad_ambient){
+			sp.fetchSample(sample, 0);
+		}
+		Motor.A.stop(true);
+		Motor.B.stop(true);
 	}
 	/*
 	 * gebruikt rotate om naar de huidige positie van de arm te draaien. en ze
@@ -74,7 +93,7 @@ public class Assignment1 {
 		float[] sample = new float[sp.sampleSize()]; // TODO werkt dit?
 		int i = 0;
 		sp.fetchSample(sample, 0); // TODO moet dit 0 zijn
-		System.out.println(sample[0]);
+		//System.out.println(sample[0]);
 		int start_degree = (int) sample[0]; // TODO klopt dat dit de
 		// draaing is
 		NXTRegulatedMotor left = Motor.B; // TODO zijn dit de goede motoren?
@@ -91,12 +110,11 @@ public class Assignment1 {
 			right.forward();
 			left.backward();
 		}
-		System.out.println(degree - Math.abs(current_degree - start_degree));
-		System.out.println(degree + ":" + current_degree + ":" + start_degree);
+		//System.out.println(degree - Math.abs(current_degree - start_degree));
+		//System.out.println(degree + ":" + current_degree + ":" + start_degree);
 		while (0.8*degree - Math.abs(current_degree - start_degree) > 0) {
 			// System.out.println("waardes");
-			System.out.println(degree
-					- Math.abs(current_degree - start_degree));
+			//System.out.println(degree - Math.abs(current_degree - start_degree));
 			System.out.println(degree + ":" + current_degree + ":"
 					+ start_degree);
 			current_degree = (int) sample[0];
@@ -133,8 +151,8 @@ public class Assignment1 {
 			//				break;
 			//			}
 		}
-		Motor.A.stop();
-		Motor.B.stop();
+		Motor.A.stop(true);
+		Motor.B.stop(true);
 		return i;
 	}
 
@@ -200,7 +218,7 @@ public class Assignment1 {
 				System.out.println("distance:"+sample_dist[0]);
 				if (sample_dist[0]<tower_dist && sample_dist[0] != 0)
 					this.stop = true;
-				System.out.println(sample[0]);
+				//System.out.println(sample[0]);
 				if (sample[0] > pad_ambient) {
 					arm.stop();
 					klaar = true;
@@ -209,7 +227,7 @@ public class Assignment1 {
 			arm.stop();
 			if (arm.getTachoCount() <= minpos)
 				arm.rotateTo(middle_positon);
-			System.out.println("juhgfced");
+			//System.out.println("juhgfced");
 		}else{
 			/*arm.backward();// TODO forward of backward?
 			while (!(klaar || arm.getTachoCount() <= minpos) ){
@@ -231,7 +249,7 @@ public class Assignment1 {
 				System.out.println("distance:"+sample_dist[0]);
 				if (sample_dist[0]<tower_dist&& sample_dist[0] != 0)
 					this.stop = true;
-				System.out.println(sample[0]);
+				//System.out.println(sample[0]);
 				if (sample[0] > pad_ambient) {
 					arm.stop();
 					klaar = true;

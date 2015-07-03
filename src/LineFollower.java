@@ -1,13 +1,7 @@
-import java.util.ArrayList;
-
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
-import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.NXTLightSensor;
-import lejos.hardware.sensor.SensorMode;
-import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
 

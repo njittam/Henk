@@ -1,11 +1,7 @@
-import lejos.hardware.Sound;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
-import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.NXTLightSensor;
-import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 
 public class numberofdegrees {

@@ -1,22 +1,41 @@
 import lejos.hardware.Sound;
 
 
-public class Sounds {
-
-
+public class Sounds extends Thread{
+	int A5 = 880;
+	int B5 = 988;
+	int D6 = 1175;
+	int E6 = 1319;
+	int CH6 = 1109;
+	int FH6 = 1480;
+	int A6 = 1760;
+	static enum Songs {Rick};
+	public Songs song = Songs.Rick;
+	public void run(){
+		switch(song){
+		case Rick:
+			rick();
+			break;
+		default:
+			break;
+		
+		}
+	}
+	public void setSong(Songs s){
+		this.song = s;
+	}
+	
 	public void playmusic (int[] freqs, int length) {
 		for (int i = 0; i < freqs.length ; i++) {
 			Sound.playNote(Sound.PIANO, freqs[i], length);
 		}
 	}
-	public void geluid(){
-		int A5 = 880;
-		int B5 = 988;
-		int D6 = 1175;
-		int E6 = 1319;
-		int CH6 = 1109;
-		int FH6 = 1480;
-		int A6 = 1760;
+	
+	public void toren(){
+		
+	}
+	
+	public void rick(){
 		int[] freqs1 = {A5, B5, D6, B5};
 		playmusic(freqs1, 125);
 		int[] freqs2 = {FH6, FH6};

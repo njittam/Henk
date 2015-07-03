@@ -1,6 +1,8 @@
 import lejos.hardware.motor.Motor;
 import lejos.hardware.motor.NXTRegulatedMotor;
+import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3GyroSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.NXTLightSensor;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
@@ -9,16 +11,40 @@ import lejos.utility.Delay;
 public class Assignment1 {
 	public NXTLightSensor light;
 	EV3GyroSensor gyro;
-	public Assignment1(NXTLightSensor s, EV3GyroSensor gyro){
+	public boolean stop;
+	public double tower_dist = 0.30;
+	private EV3UltrasonicSensor dist_sens;
+	public Assignment1(NXTLightSensor s, EV3GyroSensor gyro, EV3UltrasonicSensor d){
 		this.light = s;
 		this.gyro = gyro;
+		this.dist_sens = d;
 	}
 	/**
 	 * @param args
 	 */
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		this.line_follower(new linetest());
+		Assignment1 as1 = new Assignment1(new NXTLightSensor(SensorPort.S2), new EV3GyroSensor(SensorPort.S1), new EV3UltrasonicSensor(SensorPort.S3));
+		int min_follow = 5;
+		int follow = 0;
+		Sounds s = new Sounds();
+		s.setDaemon(true);	
+		//s.start();
+		while (follow < min_follow)
+			follow = as1.line_follower(false);
+		s.start();
+		follow = 0;
+		while (follow < min_follow)
+			follow = as1.line_follower(false);
+		s.start();
+		follow = 0;
+		while (follow < min_follow)
+			follow = as1.line_follower(true);
+		s.start();
+
+	}
+	public void move_to_line(){
+		
 	}
 	/*
 	 * gebruikt rotate om naar de huidige positie van de arm te draaien. en ze
@@ -80,33 +106,36 @@ public class Assignment1 {
 		left.stop(true);
 	}
 
-	public void line_follower(lineBool lb){// geef nooit een lineBool mee maar een eigen class waarvan lineBool de superclass is.
+	public int line_follower(boolean follow_right_line){// geef nooit een lineBool mee maar een eigen class waarvan lineBool de superclass is.
 
-		boolean stop = false;
+		stop = false;
+		int i =0;
 		defMovement movement = new defMovement(gyro);
 		while (!stop){
+			i++;
 			int middle_position = Motor.D.getTachoCount();
 			this.move_forward(false);
-			this.find_line(true);
+			this.find_line(follow_right_line);
 			Motor.A.stop(true);
 			Motor.B.stop(true);
 			movement.move_according_to_arm(middle_position);
 			//this.move_forward(true);
 
-
-			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
-			case stop_following1:
-				stop = lb.stop_following();
-				break;
-			case stop_following2:
-				stop = lb.stop_following(0);
-			default:
-				stop = true;
-				break;
-			}
+			//
+			//			switch(lb.getF()){  //Als je lineBool aanpast moet je deze switch case ook aanpassen.
+			//			case stop_following1:
+			//				stop = lb.stop_following();
+			//				break;
+			//			case stop_following2:
+			//				stop = lb.stop_following(0);
+			//			default:
+			//				stop = true;
+			//				break;
+			//			}
 		}
 		Motor.A.stop();
 		Motor.B.stop();
+		return i;
 	}
 
 
@@ -143,8 +172,11 @@ public class Assignment1 {
 		int armspeed = 200;
 		boolean klaar = false;
 		arm.setSpeed(armspeed);
+		int i = 0;
 		SampleProvider sp = light.getRedMode();
+		SampleProvider sp_dist = this.dist_sens.getDistanceMode();
 		float[] sample = new float[sp.sampleSize()];
+		float[] sample_dist = new float[sp_dist.sampleSize()];
 		if (follow_right_line){
 			/*
 			arm.forward();// TODO forward of backward?
@@ -158,11 +190,16 @@ public class Assignment1 {
 			}
 			if (!klaar)
 				arm.backward();
-			*/
+			 */
 			arm.rotateTo(maxpos);
 			arm.backward();
 			while (!(klaar|| arm.getTachoCount() <= minpos)){
+				i++;
 				sp.fetchSample(sample, 0);
+				sp_dist.fetchSample(sample_dist, 0);
+				System.out.println("distance:"+sample_dist[0]);
+				if (sample_dist[0]<tower_dist && sample_dist[0] != 0)
+					this.stop = true;
 				System.out.println(sample[0]);
 				if (sample[0] > pad_ambient) {
 					arm.stop();
@@ -188,7 +225,12 @@ public class Assignment1 {
 			arm.rotateTo(minpos);
 			arm.forward();
 			while (!(klaar|| arm.getTachoCount() >= maxpos)){
+				i++;
 				sp.fetchSample(sample, 0);
+				sp_dist.fetchSample(sample_dist, 0);
+				System.out.println("distance:"+sample_dist[0]);
+				if (sample_dist[0]<tower_dist&& sample_dist[0] != 0)
+					this.stop = true;
 				System.out.println(sample[0]);
 				if (sample[0] > pad_ambient) {
 					arm.stop();

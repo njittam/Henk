@@ -15,6 +15,8 @@ public class Assignment1 {
 	public double tower_dist = 0.30;
 	double pad_ambient = 0.42;
 	private EV3UltrasonicSensor dist_sens;
+	boolean go_to_middle = false;
+	public int some_degree;
 	public Assignment1(NXTLightSensor s, EV3GyroSensor gyro, EV3UltrasonicSensor d){
 		this.light = s;
 		this.gyro = gyro;
@@ -23,10 +25,11 @@ public class Assignment1 {
 	/**
 	 * @param args
 	 */
-	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Motor.D.resetTachoCount();
 		Assignment1 as1 = new Assignment1(new NXTLightSensor(SensorPort.S2), new EV3GyroSensor(SensorPort.S1), new EV3UltrasonicSensor(SensorPort.S3));
+		
 		int min_follow = 5;
 		int follow = 0;
 		Sounds s = new Sounds();
@@ -45,6 +48,7 @@ public class Assignment1 {
 			follow = as1.line_follower(false);
 		s2.start();
 		follow = 0;
+		as1.go_to_middle = true;
 		while (follow < min_follow)
 			follow = as1.line_follower(true);
 		s3.start();
@@ -76,7 +80,7 @@ public class Assignment1 {
 		float current_torque = arm.getPosition();
 		// arm.rotateTo(middle_position - 9,true);
 		int degrees = (int) (middle_position - current_torque);
-		rotate(Math.abs(degrees), degrees <= 0);// TODO check of de boolean goed
+		rotate(Math.abs(degrees), degrees < 0);// TODO check of de boolean goed
 		// is.
 		arm.rotateTo(middle_position);
 	}
@@ -118,6 +122,23 @@ public class Assignment1 {
 			System.out.println(degree + ":" + current_degree + ":"
 					+ start_degree);
 			current_degree = (int) sample[0];
+			if (this.go_to_middle){
+				if (some_degree == 0){
+					some_degree=current_degree % 360;
+					if (some_degree == 0){
+						some_degree = 1;
+					}
+					if (some_degree < -1)
+						some_degree = 360-Math.abs(some_degree);
+				}else{
+					int currentdegree2 = current_degree % 360;
+					if (currentdegree2 < 0)
+						currentdegree2 = 360 - Math.abs(currentdegree2);
+					if (Math.abs(currentdegree2 - some_degree) < 10)
+						this.stop = true;
+				}
+					
+			}
 			sp.fetchSample(sample, 0);
 		}
 		right.stop(true);
@@ -136,7 +157,7 @@ public class Assignment1 {
 			this.find_line(follow_right_line);
 			Motor.A.stop(true);
 			Motor.B.stop(true);
-			movement.move_according_to_arm(middle_position);
+			move_according_to_arm(middle_position);
 			//this.move_forward(true);
 
 			//

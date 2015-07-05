@@ -24,6 +24,9 @@ public class Assignment3 {
 	NXTRegulatedMotor left = Motor.B; // TODO zijn dit de goede motoren?
 	NXTRegulatedMotor right = Motor.A;
 	NXTRegulatedMotor arm = Motor.D;
+	enum Tower {
+		None, Red, Blue
+	};
 	public Assignment3(NXTLightSensor s, EV3GyroSensor gyro, EV3UltrasonicSensor d){
 		this.light = s;
 		this.gyro = gyro;
@@ -41,12 +44,21 @@ public class Assignment3 {
 		// TODO Auto-generated method stub
 		Motor.D.resetTachoCount();
 		Assignment3 as3 = new Assignment3(new NXTLightSensor(SensorPort.S2), new EV3GyroSensor(SensorPort.S1), new EV3UltrasonicSensor(SensorPort.S3));
-		while (true){
+		boolean as_complete = false;//TODO deze wordt nog nooit op true gezet
+		while (!as_complete){
 			as3.search_for_pillars();
 			as3.move_to_pillar();
 			Tower t = as3.detect_tower();
 			as3.behave_according_to_tower(t);
 		}
+	}
+	private void behave_according_to_tower(Tower t) {
+		// TODO Auto-generated method stub
+		
+	}
+	private Tower detect_tower() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	public void move_to_pillar(){
 		SampleProvider sp = this.dist_sens.getDistanceMode();
